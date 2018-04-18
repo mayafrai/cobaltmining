@@ -1,0 +1,6 @@
+[{"age": "3-5", "miners": "7", "mpercentage": ".1", "workers": "58", "wpercentage": ".8", "students": "755", "percent-school": "11"},
+  {"age": "6-8", "miners": "56","mpercentage": ".8", "workers": "344", "wpercentage": "5", "students": "4010", "percent-school": "57"},
+  {"age": "9-12", "miners": "127", "mpercentage": "2", "workers": "909", "wpercentage": "13", "students": "4823", "percent-school": "68"},
+  {"age": "13-15", "miners": "408", "mpercentage": "6", "workers": "1619", "wpercentage": "23", "students": "4645", "percent-school": "66"},
+  {"age": "16-17", "miners": "832", "mpercentage": "12", "workers": "2385", "wpercentage": "34", "students": "3836", "percent-school": "54"}]
+ 
