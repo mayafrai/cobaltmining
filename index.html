@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>INFO 3300 - Project 1 </title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="all.css" media="all"/>
+    <style>
+    svg {
+      border: solid #ccc 1px;
+    }
+    </style>
+  </head>
+
+  <body>
+    <h1 id="title">Is your smartphone powered by child labor?</h1>
+
+    <!-- Section 1 -->
+
+  <div id="section1-wrap">
+    <div id="section1">
+      <h1 class="question"> Do you ever think about what powers your smartphone? </h1>
+      <h2 class="body"> Your smartphone is powered by lithium-ion batteries, which require cobalt as the main ingredient. The search and extraction of cobalt is extremely dangerous. </h2>
+    </div>
+
+    <div id="img1">
+      <!-- Illustration made by Maya Frai. -->
+      <img alt="cobalt and smartphone" src="images/img1.png">
+    </div>
+  </div>
+
+    <!-- Section 2 -->
+  <div id="section2-wrap">
+    <div id="section2">
+      <h1 class="question">Where does cobalt come from? </h1>
+      <h2 class="body"> One of the richest mineral deposits for cobalt on Earth is in the Democratic Republic of Congo.  </h2>
+    </div>
+
+    <div id="img2">
+      <!-- Source of map image: Cobalt Pipeline WPost Article -->
+      <img alt="congo map" src="images/img2.png">
+    </div>
+  </div>
+
+  <!-- Section 3 -->
+  <div id="section3">
+    <h1 class="subtitle">Our world has become reliant on lithium-ion batteries
+      that power the smartphones we use every day. In the U.S., 60% of
+      imported cobalt comes from the D.R. of Congo alone. </h1>
+
+
+    <div id="title-wrap">
+      <p id="title1"> Global and DRC Cobalt Production and Cobalt Extraction </p>
+
+      <p id="title2"> YoY Global Smartphone Sales </p>
+    </div>
+
+      <div id="graph-wrap">
+        <div id="cobalt-graph">
+          <svg id="cobalt" height="550" width="650"></svg>
+        </div>
+        <div id="phone-graph">
+        <svg id="phone" height="550" width="650"></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4 -->
+  <div id="section4">
+    <h1 class="subtitle">How many children and young adults work in the mines?  </h1>
+          <div id="explanation">
+      <h2> According to the Washington Post, no one has the total number of child laborers working in cobalt mines in the DRC. The situation in the DRC is unfortunate and can only be studied by conducting often dangerous fieldwork. However, we do know an estimate of the number of children in 2016 based on data used in the bottom graph. We find that many children in the DRC work outside the home, usually in mining and agriculture. Children at young ages attend school, but often drop out when they get older to work in cobalt mining to support their family.
+      </h2>
+      </div>
+    <div id="graph-wrap2">
+      <div id="age-graph">
+        <svg id="age" height="550" width="850" ></svg>
+      </div>
+
+    </div>
+  </div>
+
+<!-- Section 5 -->
+<div id="section5">
+  <h2 class="subtitle">Why are these children working? </h2>
+  <div id="graph-wrap3">
+    <div id="piechart">
+           <svg id="pie" height="570" width="710"></svg>
+    </div>
+      <div id="children">
+        <!-- Source: Google Images and WPost Article -->
+        <img alt="cobalt and smartphone" src="images/children.png">
+      </div>
+    </div>
+
+    <p id="conclusion"> Based on our findings, we realized that there are years of missing data on the number of working children in the mines of the DRC. Based on a recent report, we were able to estimate that the number of children working in the mines almost equal those who attend school, signifying that mining is a part of their upbringing. Based on the global cobalt production and YoY smartphoen sales, we can visually represent that a large percentage of workers mining cobalt for smartphones are in fact young adults and children.</p> <br/>
+    <p id="info"> If you'd like to learn more about this issue, I suggest reading <a href="https://www.washingtonpost.com/graphics/business/batteries/congo-cobalt-mining-for-lithium-ion-battery/">The Cobalt Pipeline</a>, published by the Washington Post.
+    </p>
+  </div>
+
+
+    <script>
+
+      d3.json("cobaltmineproduction.json", callback)
+      var cobaltData = callback;
+      function callback(cobaltData) {
+        var svg = d3.select("#cobalt");
+
+        var yearScale = d3.scaleLinear()
+        .domain([2007, 2017])
+        .range([60,530]);
+
+        var prodScale = d3.scaleLinear()
+        .domain([0, 130000])
+        .range([480,10]);
+
+        cobaltData.forEach(function(d,i){
+          svg.append("circle")
+          .attr("cx", yearScale(d["year"])+40)
+          .attr("cy", (prodScale(d["production"])))
+          //.attr("cy", (prodScale(0) - prodScale(d["production"]))/2)
+          .attr("r", 5)
+          .style("fill", "#6ea0f6");
+
+          var valueline = d3.line()
+          .x(function(d) { return (yearScale(d["year"])+40); })
+          .y(function(d) { return (prodScale(d["production"])); });
+
+          svg.append("path")
+          .data([cobaltData])
+          .attr("class", "line")
+          .attr("d", valueline)
+          .style("fill", "none")
+          .style("stroke", "#9B9B9B");
+
+        });
+      }
+
+      d3.json("global-cobalt.json", callback1)
+      var globalData = callback1;
+      function callback1(globalData) {
+        var svg = d3.select("#cobalt");
+
+        var yearScale = d3.scaleLinear()
+        .domain([2007, 2017])
+        .range([60,530]);
+
+        var globalScale = d3.scaleLinear()
+        .domain([0, 126000])
+        .range([480,10]);
+
+        globalData.forEach(function(d,i){
+          svg.append("circle")
+          .attr("cx", yearScale(d["year"])+40)
+          .attr("cy", (globalScale(d["production"])))
+          //.attr("cy", (prodScale(0) - prodScale(d["production"]))/2)
+          .attr("r", 5)
+          .style("fill", "white");
+
+          var valueline = d3.line()
+          .x(function(d) { return (yearScale(d["year"])+40); })
+          .y(function(d) { return (globalScale(d["production"])); });
+
+          svg.append("path")
+          .data([globalData])
+          .attr("class", "line")
+          .attr("d", valueline)
+          .style("fill", "none")
+          .style("stroke", "#9B9B9B");
+        });
+      }
+
+      d3.json("worldwidecobaltdemand.json", callback2)
+      var demandData = callback2;
+      function callback2(demandData) {
+        var svg = d3.select("#cobalt");
+
+        var yearScale = d3.scaleLinear()
+        .domain([2007, 2017])
+        .range([60,530]);
+
+        var demandScale = d3.scaleLinear()
+        .domain([0, 126000])
+        .range([480,10]);
+
+        demandData.forEach(function(d,i){
+          svg.append("circle")
+          .attr("cx", yearScale(d["year"])+40)
+          .attr("cy", (demandScale((d["new demand"])*1300)))
+          .attr("r", 5)
+          .style("fill", "#be9fdf");
+
+          var valueline = d3.line()
+          .x(function(d) { return (yearScale(d["year"])+40); })
+          .y(function(d) { return (demandScale(d["new demand"]*1300)); });
+
+          svg.append("path")
+          .data([demandData])
+          .attr("class", "line")
+          .attr("d", valueline)
+          .style("fill", "none")
+          .style("stroke", "#9B9B9B");
+        });
+
+        var yearScale = d3.scaleLinear()
+        .domain([2007, 2017])
+        .range([60,530]);
+        
+        var prodScale = d3.scaleLinear()
+        .domain([0, 130000])
+        .range([480,10]);
+
+        var yearAxis = d3.axisBottom(yearScale)
+        .tickFormat(d3.format("d"));
+        var prodAxis = d3.axisLeft(prodScale);
+        svg.append("g")
+        .attr("transform","translate(40,480)")
+        .call(yearAxis)
+        .style("stroke", "#9B9B9B");
+
+        svg.append("g")
+        .attr("transform","translate(100,0)")
+        .call(prodAxis)
+        .style("stroke", "#9B9B9B");
+
+        svg.append("text")
+        .attr("x", 300)
+        .attr("y", 530)
+        .style("font-family", "sans-serif")
+        .style("font-size", 16)
+        .style("fill", "white")
+        .text("Year");
+
+        svg.append("text")
+        .attr("x", 10)
+        .attr("y", 0)
+        .style("font-family", "sans-serif")
+        .style("font-size", 16)
+        .style("fill", "white")
+        .attr("transform", "rotate(270), translate(-320, 35)")
+        .text("Cobalt (in metric tons)");
+
+        svg.append("text")
+        .attr("x", 420)
+        .attr("y", 320)
+        .style("font-family", "sans-serif")
+        .style("font-size", 10)
+        .style("fill", "#be9fdf")
+        .text("Cobalt used for lithium batteries worldwide");
+
+        svg.append("text")
+        .attr("x", 480)
+        .attr("y", 230)
+        .style("font-family", "sans-serif")
+        .style("font-size", 10)
+        .style("fill", "#6ea0f6")
+        .text("Cobalt production in the DRC");
+
+        svg.append("text")
+        .attr("x", 500)
+        .attr("y", 100)
+        .style("font-family", "sans-serif")
+        .style("font-size", 10)
+        .style("fill", "white")
+        .text("Global cobalt production");
+      }
+
+    </script>
+
+    <script>
+
+      d3.json("phone.json", callback);
+      phoneData = callback;
+      var svg2 = d3.select("#phone");
+
+      function callback(phoneData) {
+
+        var yearScale = d3.scaleLinear()
+        .domain([2006, 2016])
+        .range([60,530]);
+
+        var phoneScale = d3.scaleLinear()
+        .domain([0, 1500])
+        .range([480,10]);
+
+        phoneData.forEach(function(d,i){
+          svg2.append("circle")
+          .attr("cx", yearScale(d["year"])+40)
+          .attr("cy", (phoneScale(d["phones"])))
+          //.attr("cy", (phoneScale(0) - phoneScale(d["phones"]))/2)
+          .attr("r", 5)
+          .style("fill", "#6ea0f6")
+
+          var valueline = d3.line()
+          .x(function(d) { return (yearScale(d["year"])+40); })
+          .y(function(d) { return (phoneScale(d["phones"])); });
+
+          svg2.append("path")
+          .data([phoneData])
+          .attr("class", "line")
+          .attr("d", valueline)
+          .style("fill", "none")
+          .style("stroke", "#9B9B9B");
+        });
+
+        var yearAxis = d3.axisBottom(yearScale)
+        .tickFormat(d3.format("d"));
+        var phoneAxis = d3.axisLeft(phoneScale);
+        svg2.append("g")
+        .attr("transform","translate(40,480)")
+        .call(yearAxis)
+        .style("stroke", "#9B9B9B");
+        svg2.append("g")
+        .attr("transform","translate(100,0)")
+        .call(phoneAxis)
+        .style("stroke", "#9B9B9B");
+
+        svg2.append("text")
+        .attr("x", 300)
+        .attr("y", 530)
+        .style("font-family", "sans-serif")
+        .style("font-size", 16)
+        .style("fill", "white")
+        .text("Year");
+
+        svg2.append("text")
+        .attr("x", 10)
+        .attr("y", 0)
+        .style("font-family", "sans-serif")
+        .style("font-size", 16)
+        .style("fill", "white")
+        .attr("transform", "rotate(270), translate(-350, 35)")
+        .text("Phone sales (in millions of units)");
+
+      };
+
+    </script>
+
+   <script>
+
+      d3.json("ages.json", callback);
+      ageData = callback;
+      var svg1 = d3.select("#age");
+
+      function callback(ageData) {
+
+        var ageScale = d3.scaleOrdinal()
+        .domain(["", "3-5", "6-8", "9-12", "13-15", "16-17",""])
+        //.range([600,50]);
+        .range([50, 150, 250, 350, 450, 550, 650]);
+
+        var workerScale = d3.scaleLinear()
+        .domain([0, 5000])
+        .range([500,50]);
+        var minerScale = d3.scaleLinear()
+        .domain([0, 5000])
+        .range([500,50]);
+        var studentScale = d3.scaleLinear()
+        .domain([0, 5000])
+        .range([500,50]);
+
+        ageData.forEach(function(d,i){
+          svg1.append("rect")
+          .attr("x", ageScale(d["age"])+37.5)
+          .attr("y", (workerScale(d["workers"])))
+          .attr("height", (workerScale(0)-workerScale(d["workers"])))
+          .attr("width", 25)
+          .style("fill", "#6ea0f6")
+          .style("stroke", "white");
+          svg1.append("rect")
+          .attr("x", ageScale(d["age"])+62.5)
+          .attr("y", (studentScale(d["students"])))
+          .attr("height", (studentScale(0)-studentScale(d["students"])))
+          .attr("width", 25)
+          .style("fill", "#be9fdf")
+          .style("stroke", "white");
+          svg1.append("rect")
+          .attr("x", ageScale(d["age"])+12.5)
+          .attr("y", (minerScale(d["miners"])))
+          .attr("height", (minerScale(0)-minerScale(d["miners"])))
+          .attr("width", 25)
+          .style("fill", "blue")
+          .style("stroke", "white");
+
+
+          svg1.append("g")
+          .selectAll(".textlabel")
+          .data(ageData)
+          .enter()
+          .append("text")
+          .attr("class", "textlabel")
+          .attr("x", function(d){ return (ageScale(d["age"])+37); })
+          .attr("y", function(d){ return (workerScale(d["workers"]))-10; })
+      //    .attr("y", function(d){ return (workerScale(0) - workerScale(d["workers"]))/2 + 20; })
+          .text(function(d){ return (d["wpercentage"]+"%"); })
+          .attr("id", "percent")
+          .style("fill", "#9B9B9B")
+          .style("font-size", "12");
+
+          svg1.append("g")
+          .selectAll(".textlabel")
+          .data(ageData)
+          .enter()
+          .append("text")
+          .attr("class", "textlabel")
+          .attr("x", function(d){ return (ageScale(d["age"])+63); })
+          .attr("y", function(d){ return (studentScale(d["students"]))-10; })
+      //    .attr("y", function(d){ return (workerScale(0) - workerScale(d["workers"]))/2 + 20; })
+          .text(function(d){ return (d["percent-school"]+"%"); })
+          .attr("id", "percent")
+          .style("fill", "#9B9B9B")
+          .style("font-size", "12");;
+
+          svg1.append("g")
+          .selectAll(".textlabel")
+          .data(ageData)
+          .enter()
+          .append("text")
+          .attr("class", "textlabel")
+          .attr("x", function(d){ return (ageScale(d["age"])+14); })
+          .attr("y", function(d){ return (minerScale(d["miners"]))-10; })
+      //    .attr("y", function(d){ return (workerScale(0) - workerScale(d["workers"]))/2 + 20; })
+          .text(function(d){ return (d["mpercentage"]+"%"); })
+          .attr("id", "percent")
+          .style("fill", "#9B9B9B")
+          .style("font-size", "12");;
+        });
+
+        var ageAxis = d3.axisBottom(ageScale);
+        var workerAxis = d3.axisLeft(workerScale);
+        var studentAxis = d3.axisLeft(studentScale);
+        var minerAxis = d3.axisLeft(minerScale);
+        svg1.append("g")
+        .attr("transform","translate(50,500)")
+        .call(ageAxis)
+        .style("stroke", "#9B9B9B");
+        svg1.append("g")
+        .attr("transform","translate(100, 0)")
+        .call(workerAxis)
+        .style("stroke", "#9B9B9B");
+
+        svg1.append("text")
+        .attr("x", 385)
+        .attr("y", 535)
+        .style("font-family", "sans-serif")
+        .style("font-size", 16)
+        .style("fill", "white")
+        .text("Ages");
+
+        svg1.append("text")
+        .attr("x", 10)
+        .attr("y", 0)
+        .style("font-family", "sans-serif")
+        .style("font-size", 16)
+        .style("fill", "white")
+        .attr("transform", "rotate(270), translate(-320, 35)")
+        .text("Number of workers");
+
+        svg1.append("rect")
+          .attr("x", 675)
+          .attr("y", 20)
+          .attr("height", 125)
+          .attr("width", 150)
+          .style("fill", "#9B9B9B");
+        svg1.append("rect")
+          .attr("x", 680)
+          .attr("y", 60)
+          .attr("height", 20)
+          .attr("width", 20)
+          .style("fill", "#6ea0f6");
+          svg1.append("text")
+        .attr("x", 705)
+        .attr("y", 73)
+        .style("font-family", "sans-serif")
+        .style("font-size", 12)
+        .style("fill", "white")
+        .text("-- Child workers");
+          svg1.append("rect")
+          .attr("x", 680)
+          .attr("y", 85)
+          .attr("height", 20)
+          .attr("width", 20)
+          .style("fill", "#be9fdf");
+            svg1.append("text")
+        .attr("x", 705)
+        .attr("y", 98)
+        .style("font-family", "sans-serif")
+        .style("font-size", 12)
+        .style("fill", "white")
+        .text("-- Children in school");
+        svg1.append("rect")
+          .attr("x", 680)
+          .attr("y", 110)
+          .attr("height", 20)
+          .attr("width", 20)
+          .style("fill", "blue");
+        svg1.append("text")
+        .attr("x", 705)
+        .attr("y", 122)
+        .style("font-family", "sans-serif")
+        .style("font-size", 12)
+        .style("fill", "white")
+        .text("-- Children in mines");
+
+            svg1.append("text")
+        .attr("x", 720)
+        .attr("y", 40)
+        .style("font-family", "sans-serif")
+        .style("font-size", 15)
+        .style("fill", "white")
+        .text("Legend");
+      }
+    </script>
+
+  <script>
+
+    var svg3 = d3.select("#pie"),
+        width = +svg3.attr("width"),
+        height = +svg3.attr("height"),
+        radius = Math.min(width, height) / 2,
+        g = svg3.append("g").attr("transform", "translate(" + width *2/ 5 + "," + height  / 2 + ")");
+
+    var color = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c"]);
+    //var color = d3.scaleOrdinal(d3.schemeDark2);
+
+    var pie = d3.pie()
+        .sort(null)
+        .value(function(d) { return d.population; });
+
+    var path = d3.arc()
+        .outerRadius(radius - 70)
+        .innerRadius(0);
+
+    var label = d3.arc()
+        .outerRadius(radius-30)
+        .innerRadius(radius);
+
+
+    d3.csv("reason.csv", function(d) {
+      d.population = +d.population;
+      return d;
+    }, function(error, data) {
+      if (error) throw error;
+
+      var arc = g.selectAll(".arc")
+        .data(pie(data))
+        .enter().append("g")
+          .attr("class", "arc");
+
+      arc.append("path")
+          .attr("d", path)
+          .attr("fill", function(d) { return color(d.data.realreason); });
+
+      arc.append("text")
+          .attr("transform", function(d) { return "translate(" + label.centroid(d)  + ")";
+           })
+          .style("fill", "#9B9B9B")
+          .style("font-family", "Monaco")
+          .style("font-size", "12")
+          .attr("dy", "0.35em")
+          .text(function(d) { return d.data.realreason; });
+
+          arc.append("text")
+                .attr("transform", function(d) { var c = path.centroid(d);
+        return "translate(" + c[0]*1.6 +"," + c[1]*1.6 + ")";
+            })
+            .style("fill", "black")
+          .style("font-family", "Monaco")
+          .style("font-size", "13")
+            .attr("text-anchor", "middle")
+            .text(function(d) { return d.data.percentage+"%"; });
+
+
+    });
+
+  </script>
+  </body>
+
+</html>
