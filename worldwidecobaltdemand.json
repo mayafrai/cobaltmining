@@ -1,0 +1,52 @@
+[
+   {
+      "year":2008,
+      "change in demand":2.53,
+      "new demand":34.58
+   },
+   {
+      "year":2009,
+      "change in demand":-0.45,
+      "new demand":31.58
+   },
+   {
+      "year":2010,
+      "change in demand":4.51,
+      "new demand":33
+   },
+   {
+      "year":2011,
+      "change in demand":3.86,
+      "new demand":34.28
+   },
+   {
+      "year":2012,
+      "change in demand":3.27,
+      "new demand":35.40
+   },
+   {
+      "year":2013,
+      "change in demand":3.2,
+      "new demand":36.53
+   },
+   {
+      "year":2014,
+      "change in demand":3.64,
+      "new demand":37.86
+   },
+   {
+      "year":2015,
+      "change in demand":4.07,
+      "new demand":39.40
+   },
+   {
+      "year":2016,
+      "change in demand":4.05,
+      "new demand":41
+   },
+   {
+      "year":2017,
+      "change in demand":3.91,
+      "new demand":42.60
+   }
+]
